@@ -13,6 +13,15 @@
 	<br>
 	<button onclick="button()">ANALYZE ME!!!</button>
 
+	<form>
+		<div class="custom-file">
+			<label class="custom-file-label" for="customFile">Choose file</label>
+			<input type="file" class="custom-file-input" id="customFile">
+		</div>
+		<input type="submit">
+	</form>
+
+
 	<h2 id="content"></h2>
 	<script>
 		document.getElementById("demo").onclick = function () { myFunction() };
@@ -25,6 +34,9 @@
 				document.getElementById("content").innerHTML = "YOU HAVE CANCER!!!";
 			}
 		}
+	</script>
+	<script src="./imageresizer.js">
+		loadCanvasWithInputFile();
 	</script>
 
 </body>
