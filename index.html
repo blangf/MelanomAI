@@ -9,22 +9,22 @@
 	<h1>MelanomAI</h1>
 	<p>This Web App uses Neural Networks to detect possible skin diseases</p>
 	<br>
-	<button onclick="button()">ANALYZE ME!!!</button>
+	<button onclick="">ANALYZE ME!!!</button>
 
 	<form>
 		<div class="custom-file">
 			<label class="custom-file-label" for="customFile">Choose file</label>
-			<input type="file" class="custom-file-input" id="customFile">
+			<input type="file" class="custom-file-input" id="customFile" onchange="loadCanvasWithInputFile(event)">
 		</div>
 		<input type="submit">
 	</form>
 
+	<h2 id="content">
+		<canvas id="canvas"></canvas>
+	</h2>
 	<script src="imageresizer.js">
-	loadCanvasWithInputFile()
+		
 	</script>
-
-
-	<h2 id="content"></h2>
 </body>
 
 </html>
