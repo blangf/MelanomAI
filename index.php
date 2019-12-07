@@ -14,7 +14,7 @@
 	<h1>MelanomAI</h1>
 	<p>This Web App uses Neural Networks to detect possible skin diseases</p>
 	<br>
-	<button onclick="loadFromLocalHost()">import from localhost(need e.g. XAMPP)</button>
+	<button onclick="run()">import from localhost(need e.g. XAMPP)</button>
 
 	<form>
 		<div class="custom-file">
@@ -25,11 +25,10 @@
 	</form>
 
 	<h2 id="content">
-		<canvas id="canvas"></canvas>
+		<p id="imageName"></p>
+		<canvas id="currentImage"></canvas>
 	</h2>
-	<script src="imageresizer.js">
-		
-	</script>
+	<script src="imageLoader.js"></script>
 
 </body>
 
