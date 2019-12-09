@@ -1,13 +1,15 @@
 <html>
 
 <head>
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+		integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 	<link rel="stylesheet" href="style.css">
 	<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.0/dist/tf.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-vis@1.0.2/dist/tfjs-vis.umd.min.js"></script>
 	<script>
-	var filenames = "";//<?php echo(json_encode(scandir("./img"))); ?>;
-	filenames.splice(0,2) //get rid of "." and ".." from scandir
+	//var filenames = "";//<?php echo(json_encode(scandir("./img"))); ?>;
+	//filenames.splice(0,2) //get rid of "." and ".." from scandir
 	</script>
 	<title>MelanomAI</title>
 </head>
@@ -16,24 +18,28 @@
 	<div class="background">
 		<div class="col-6 offset-3 foreground">
 			<h1>MelanomAI</h1>
-			<p>Diese Web-App wurde im Rahmen unserer Vertiefungsarbeit an der Gewerblich-Industriellen Berufsschule Bern.
-			<br>Das Ziel dabei ware es, die Plausibilität einer KI zur erkennung von Hautkrankheiten, speziell von bösartigen Melanomen, zu überprüfen.
-			<br>Weitere Informationen finden sie in unseren <a href="AGB.html">AGB</a>.</p>
+			<p>Diese Web-App wurde im Rahmen unserer Vertiefungsarbeit an der Gewerblich-Industriellen Berufsschule
+				Bern.
+				<br>Das Ziel dabei ware es, die Plausibilität einer KI zur erkennung von Hautkrankheiten, speziell von
+				bösartigen Melanomen, zu überprüfen.
+				<br>Weitere Informationen finden sie in unseren <a href="AGB.html">AGB</a>.</p>
 			<br>
 
 			<form>
 				<fieldset class="custom-file inputField col-6">
 					<label class="custom-file-label" for="customFile">Choose file</label>
-					<input type="file" class="custom-file-input" id="customFile" onchange="loadCanvasWithInputFile(event)">
+					<input type="file" class="custom-file-input" id="customFile"
+						onchange="loadCanvasWithInputFile(event)">
 				</fieldset>
 				<fieldset class="form-group col-6 inputField">
 					<input type="checkbox" class="form-check-input" id="AGBcheckbox">
-					<label class="form-check-label" for="AGBcheckbox"> Ich habe die <a href="AGB.html">AGB</a> gelesen und bin damit einverstanden.</label>
+					<label class="form-check-label" for="AGBcheckbox"> Ich habe die <a href="AGB.html">AGB</a> gelesen
+						und bin damit einverstanden.</label>
 				</fieldset>
-				<button type="submit" class="btn btn-primary">Bild analysieren</button>
+				<!--<button type="submit" class="btn btn-primary">Bild analysieren</button>-->
 			</form>
 			<br>
-			<button onclick="run()">Import through local server</button>
+			<!--<button onclick="run()">Import through local server</button> -->
 
 			<h2 id="content">
 				<p id="imageName"></p>
@@ -45,9 +51,8 @@
 			<p id="Diagnosis"></p>
 			<p id="Certainty"></p>
 
-			<div class="alert alert-success"><strong>The AI thinks you're OK!</strong> The AI is probably wrong and you have cancer anyway.</div>
-			<br>
-			<div class="alert alert-danger"><strong>You're basically fucked!</strong> Yup... nothing more to say...</div>
+			<div id="positiveDiag" style="display: none;" class="alert alert-success"><strong>Die KI denkt, dass es dir gut geht!</strong> Die Chance ist gross dass die KI falsch liegt, weshalb du trotzdem zum Arzt gehen solltest</div>
+			<div id="negativeDiag" style="display: none;" class="alert alert-danger"><strong>Die KI denkt, dass es dir NICHT gut geht!</strong> Du solltest zum Arzt gehen.</div>
 		</div>
 	</div>
 </body>

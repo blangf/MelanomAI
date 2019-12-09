@@ -6,84 +6,67 @@ var Iterator = 0;
 var dataPromise = {}
 
 async function loadCanvasWithInputFile(evt) {
-	var ret = {};
-	var files = evt.target.files; // FileList object
-	var file = files[0];
-	var reader = new FileReader();
+	if (document.getElementById("AGBcheckbox").checked) {
 
-	var image = new Image();
-	var outputArray = [[]];
 
-	var model = "";
-	try {
-		model = await tf.loadLayersModel('./my-model.json');
-	}
-	catch
-	{
-		model = getModel();
-	}
+		var ret = {};
+		var files = evt.target.files; // FileList object
+		var file = files[0];
+		var reader = new FileReader();
 
-	document.getElementById("imageName").innerHTML = "";
+		var image = new Image();
+		var outputArray = [[]];
 
-	if (file.type.match('image.*')) {
-		// Read in the image file as a data URL.
-		reader.onload = function (event) {
-			image.onload = function () {
-				outputArray[0] = resize(image, context);
-				ret.xs = tf.tensor2d(outputArray, [1, 10000])
-				ret.labels = tf.tensor2d([[0, 1]], [1, 2])
-
-				let pred = "";
-
-				showAccuracy(model, 1, ret).then(function () {
-					pred = arguments;
-					var predOut = pred[0][1].accuracy == 0 ? "Melanom" : "No Melanom";
-					document.getElementById("Diagnosis").innerHTML = "Diagnosis: " + predOut;
-					document.getElementById("tfjs-visor-container").style.display = "none";
-				})
-
-			}
-			image.src = event.target.result;
+		var model = "";
+		try {
+			model = await tf.loadLayersModel('./my-model.json');
 		}
-		reader.readAsDataURL(file);
+		catch
+		{
+			model = getModel();
+		}
 
-	} else {
-		alert("not an image");
+		document.getElementById("imageName").innerHTML = "";
+
+		if (file.type.match('image.*')) {
+			// Read in the image file as a data URL.
+			reader.onload = function (event) {
+				image.onload = function () {
+					outputArray[0] = resize(image, context);
+					ret.xs = tf.tensor2d(outputArray, [1, 10000])
+					ret.labels = tf.tensor2d([[0, 1]], [1, 2])
+
+					let pred = "";
+
+					showAccuracy(model, 1, ret).then(function () {
+						pred = arguments;
+						var predOut = pred[0][1].accuracy == 0 ? "Melanom" : "No Melanom";
+						if (predOut == "Melanom")
+						{
+							document.getElementById("positiveDiag").style.display = "none";
+							document.getElementById("negativeDiag").style.display = "block";
+						}
+						else if(predOut == "No Melanom")
+						{
+							document.getElementById("positiveDiag").style.display = "block";
+							document.getElementById("negativeDiag").style.display = "none";
+
+						}
+						document.getElementById("tfjs-visor-container").style.display = "none";
+					})
+
+				}
+				image.src = event.target.result;
+			}
+			reader.readAsDataURL(file);
+
+		} else {
+			alert("not an image");
+		}
 	}
-
-
-}
-
-async function showExamples(examples) {
-
-	const surface =
-		tfvis.visor().surface({ name: 'Input Data Examples', tab: 'Input Data' });
-
-	// Get the examples
-	if (!examples) {
-		examples = getNextImages(10)
+	else {
+		alert("Please read and accept our AGB")
 	}
-	const numExamples = examples.xs.shape[0];
-
-	// Create a canvas element to render each example
-	for (let i = 0; i < numExamples; i++) {
-		const imageTensor = tf.tidy(() => {
-			// Reshape the image to 28x28 px
-			return examples.xs
-				.slice([i, 0], [1, examples.xs.shape[1]])
-				.reshape([100, 100, 1]);
-		});
-
-		const canvas = document.createElement('canvas');
-		canvas.width = 10;
-		canvas.height = 10;
-		canvas.style = 'margin: 4px;';
-		await tf.browser.toPixels(imageTensor, canvas);
-		surface.drawArea.appendChild(canvas);
-
-		imageTensor.dispose();
-	}
-
 }
 
 function resize(img, cont) {
@@ -103,7 +86,6 @@ function resize(img, cont) {
 		}
 	}
 	cont.putImageData(imgPixels, 0, 0)
-	context.putImageData(imgPixels, 0, 0)
 
 	return outputArray;
 }
@@ -128,19 +110,16 @@ function getNextImages(batch_size) {
 	var maliciousLabels = [[]];
 	var outputArray = [[]];
 	var ret = {};
-	var cont = {};
 
 	dataPromise = new Promise(function () {
 		for (var i = 0; i < batch_size; i++) {
 			do {
 				src = filenames[Iterator];
 				if (!src.includes(".json")) {
-					cont = document.createElement("canvas").getContext("2d")
 					document.getElementById("imageName").innerHTML = src;
-					src = "./img/" + src;
-
+					src = "./resized2/" + src;
 					image.src = src;
-					outputArray[i] = resize(image, cont)
+					outputArray[i] = resize(image, context)
 
 					metadata = loadJson(src.replace(/\..{3}$/, ".json")) //replace file ending
 					if (metadata) {
@@ -155,6 +134,7 @@ function getNextImages(batch_size) {
 
 		ret.xs = tf.tensor2d(outputArray, [batch_size, 10000])
 		ret.labels = tf.tensor2d(maliciousLabels, [batch_size, 2])
+		return ret;
 	})
 
 	return ret;
