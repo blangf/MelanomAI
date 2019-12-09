@@ -1,6 +1,8 @@
 <html>
 
 <head>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<link rel="stylesheet" href="style.css">
 	<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.0/dist/tf.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-vis@1.0.2/dist/tfjs-vis.umd.min.js"></script>
 	<script>
@@ -10,31 +12,39 @@
 </head>
 
 <body>
+	<div class="background">
+		<div class="col-6 offset-3 foreground">
+			<h1>MelanomAI</h1>
+			<p>Diese Web-App wurde im Rahmen unserer Vertiefungsarbeit an der Gewerblich-Industriellen Berufsschule Bern.
+			<br>Das Ziel dabei ware es, die Plausibilität einer KI zur erkennung von Hautkrankheiten, speziell von bösartigen Melanomen, zu überprüfen.
+			<br>Weitere Informationen finden sie in unseren <a href="AGB.html">AGB</a>.</p>
+			<br>
 
-	<h1>MelanomAI</h1>
-	<p>This Web App uses Neural Networks to detect possible skin diseases</p>
-	<br>
-	
-	<form>
-		<div class="custom-file">
-			<label class="custom-file-label" for="customFile">Choose file</label>
-			<input type="file" class="custom-file-input" id="customFile" onchange="loadCanvasWithInputFile(event)">
+			<form>
+				<fieldset class="custom-file inputField col-6">
+					<label class="custom-file-label" for="customFile">Choose file</label>
+					<input type="file" class="custom-file-input" id="customFile" onchange="loadCanvasWithInputFile(event)">
+				</fieldset>
+				<fieldset class="form-group col-6 inputField">
+					<input type="checkbox" class="form-check-input" id="AGBcheckbox">
+					<label class="form-check-label" for="AGBcheckbox"> Ich habe die <a href="AGB.html">AGB</a> gelesen und bin damit einverstanden.</label>
+				</fieldset>
+				<button type="submit" class="btn btn-primary">Bild analysieren</button>
+			</form>
+			<br>
+			<button onclick="run()">Import through local server</button>
+
+			<h2 id="content">
+				<p id="imageName"></p>
+				<canvas id="currentImage"></canvas>
+			</h2>
+			<script src="imageLoader.js"></script>
+			<script src="script.js"></script>
+
+			<p id="Diagnosis"></p>
+			<p id="Certainty"></p>
 		</div>
-		<!--<input type="submit"> -->
-	</form>
-	<br>
-	<button onclick="run()">Import through local server</button>
-
-	<h2 id="content">
-		<p id="imageName"></p>
-		<canvas id="currentImage"></canvas>
-	</h2>
-	<script src="imageLoader.js"></script>
-	<script src="script.js"></script>
-
-	<p id="Diagnosis"></p>
-	<p id="Certainty"></p>
-
+	</div>
 </body>
 
 </html>

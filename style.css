@@ -1,0 +1,16 @@
+.background {
+    background-color: #93cedb;
+    /*background-color: #9ccdff;*/
+    height: 100%;
+}
+
+.foreground {
+    background-color: white;
+    padding: 50px 40px 50px 40px;
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+    height: 100%
+}
+
+.inputField {
+    margin: 20px 0px;
+}
